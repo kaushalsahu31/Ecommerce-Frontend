@@ -5,7 +5,7 @@
       <div class="coupen top-p">
         ADDITIONAL 10% OFF ON ORDERS ABOVE RS.4999.USE CODE: PLUS10
       </div>
-      <div class="login-secton top-p">Help | Track Order | Login</div>
+      <div class="login-secton top-p ">Help | Track Order | Login</div>
     </div>
     
     <div class="box">
@@ -37,6 +37,7 @@
           <a class="navlink" href="">WOMEN</a>
           <a class="navlink" href="">ACCESSORIES</a>
           <a class="navlink" href="">SALE</a>
+          <div class="w-100 navlink">Help | Track Order | Login</div>
         </div>
         </div>
       </div>
@@ -55,7 +56,8 @@ export default {
         } else {
             panel.style.display = "block";
         }
-    }
+    },
+    
   }
 };
 </script>
@@ -142,6 +144,7 @@ export default {
   }
   .login-secton {
     margin-right: 20px;
+    display: none;
   }
   .navlink {
     font-size: 16px;
@@ -161,7 +164,7 @@ export default {
   .nav-main{
     display: none;
     position: fixed;
-     z-index: 2;
+     z-index: 100;
     top: 0;
     left: 0;
     bottom: 60px;
@@ -181,6 +184,8 @@ export default {
   }
   .search{
     float: right;
+        width: 100%;
+    text-align: end;
   }
   .close{
     width: 100%;

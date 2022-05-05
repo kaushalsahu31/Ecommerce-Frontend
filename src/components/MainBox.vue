@@ -129,13 +129,14 @@
         </div>
       </div>
       <div id="sorts" class="mobilesort">
-        <div class="flex-d center pb-2 pt-2 border-bottom">
+        <div class="flex-d center py-3 border-bottom">
 Sort by:
         </div>
           
 
-            <div v-for="(val, i) in sort" :key="i" class="flex-d center pb-2 pt-2 border-bottom" v-on:click="changesortinmobile(val.code)">
-              {{ val.label }}
+            <div v-for="(val, i) in sort" :key="i" class="w-100" v-on:click="changesortinmobile(val.code)">
+
+            <div v-if="val.code!==selectSort2" class="flex-d center py-3 border-bottom" >{{ val.label }}</div><div v-else class="flex-d center py-3 border-bottom custom-bg"><strong>{{ val.label }}</strong></div>
             </div>
 
         </div>
@@ -168,6 +169,7 @@ export default {
       filterlist:[],
       sort: [],
       selectSort: "",
+      selectSort2: "",
       order: "desc",
       loader: false,
       loader2: false,
@@ -179,17 +181,17 @@ export default {
   },
   mounted() {
 
-    // let filter=this.$route.params.filter
-    // let selectsort=this.$route.params.sortby
-    // if (filter?.length!==0 || selectsort?.length!==0) {
-    //   // let filter=this.$route.params.filter
-    // this.selectSort=this.$route.params.sortby
-    // console.log("without");
-    //   this.getfilterproduct();
-    // }else{
+    let filter=this.$route.params.filter
+    let selectsort=this.$route.params.sortby
+    if (filter?.length!==0 || selectsort?.length!==0) {
+      // let filter=this.$route.params.filter
+      // this.selectSort=this.$route.params.sortby
+      console.log("with");
+      this.getfilterproduct();
+    }else{
       
-    //   console.log("without");
-    // }
+      console.log("without");
+    }
     this.getproduct();
     window.addEventListener("scroll", this.handleScroll);
   },
@@ -272,14 +274,17 @@ export default {
         this.order = "asc";
       } else {
         this.selectSort = val;
+        
         this.order = "desc";
       }
       document.getElementById("sorts").style.display="none"
+      this.selectSort2=val;
       this.getfilterproduct();
     },
      // Sort by function mobile
     changesort() {
       let val = document.getElementById("sort").value;
+      this.selectSort2=val;
       if (val == "selling_price_high") {
         this.selectSort = "selling_price";
         this.order = "desc";
@@ -415,6 +420,9 @@ export default {
 </script>
 
 <style scoped>
+.custom-bg{
+  background-color: #d9d9d9;
+}
 p{
   margin-bottom: 0px;
 }
@@ -447,8 +455,9 @@ p{
   display: none;
 }
 .appliedfilter {
-  padding: 5px;
+  /* padding: 5px; */
   margin: 5px;
+  margin-top: 3px;
   /* border: 1px solid gray; */
   margin-left: 0px;
 }
@@ -684,6 +693,7 @@ p{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 20px;
+    width: 100%;
     margin-right: 0px;
   }
   .product {
