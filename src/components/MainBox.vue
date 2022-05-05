@@ -157,6 +157,7 @@ Sort by:
 <script>
 import axios from "axios";
 
+
 export default {
   name: "Main-Box",
   data() {
@@ -181,18 +182,22 @@ export default {
   },
   mounted() {
 
-    let filter=this.$route.params.filter
-    let selectsort=this.$route.params.sortby
-    if (filter?.length!==0 || selectsort?.length!==0) {
+    let filter=this.$route.query.filter
+
+    let selectsort=this.$route.query.sortby
+    console.log(filter,selectsort,"12");
+    if (filter?.length!==undefined || selectsort?.length!==undefined) {
       // let filter=this.$route.params.filter
-      // this.selectSort=this.$route.params.sortby
+      this.selectSort=selectsort
+
+      this.order=this.$route.query.order
       console.log("with");
       this.getfilterproduct();
     }else{
-      
+      this.getproduct();
       console.log("without");
     }
-    this.getproduct();
+    
     window.addEventListener("scroll", this.handleScroll);
   },
   methods: {
@@ -242,6 +247,8 @@ export default {
         panel.style.display = "none";
       } else {
         panel.style.display = "block";
+        document.getElementById("sorts").style.display="none"
+        document.getElementById("nav-main").style.display="none"
       }
     },
     // For showing Sort option in mobile
@@ -251,6 +258,8 @@ export default {
         panel.style.display = "none";
       } else {
         panel.style.display = "block";
+        document.getElementById("category").style.display="none"
+        document.getElementById("nav-main").style.display="none"
       }
     },
     // Filters accordion function
@@ -374,6 +383,12 @@ export default {
           this.name = result.name;
           this.page = 1;
           this.loader = false;
+          const url = new URL(window.location.href);
+          url.searchParams.set( "sortby", this.selectSort );
+          url.searchParams.set("order", this.order);
+          url.searchParams.set("filter",filter );
+
+          window.history.replaceState(null, null, url);
         });
     },
     // For loading the next page data

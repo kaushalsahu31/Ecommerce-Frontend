@@ -25,7 +25,7 @@
       <div class="mainheader">
         <div class="top">
           <div v-on:click="toogle" class="hamburger"><i class="fa-solid fa-bars" ></i></div>
-          <img src="../assets/logo.png" width="50px" alt="" />
+          <img src="../assets/logo2x.png" width="60px" alt="" />
        
         <div class="search"><img src="../assets/heart.png" class="nav-img" alt=""><img src="../assets/user.png" class="nav-img" alt=""><img src="../assets/cart.png" class="nav-img" alt=""></div>
         </div>
@@ -48,14 +48,21 @@
 <script>
 export default {
   name: "Top-Header",
+  created(){
+    
+  },
   methods:{
+   
     toogle(){
       let panel = document.getElementById("nav-main");
           if (panel.style.display === "block") {
             panel.style.display = "none";
         } else {
             panel.style.display = "block";
+            document.getElementById("sorts").style.display="none"
+            document.getElementById("category").style.display="none"
         }
+        
     },
     
   }
