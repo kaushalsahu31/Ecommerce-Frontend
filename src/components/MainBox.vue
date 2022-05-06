@@ -14,7 +14,7 @@
             v-on:change="changesort"
             id="sort"
           >
-            <option v-for="(val, i) in sort" :key="i" :value="val.code">
+            <option v-for="(val, i) in  sort" :key="i" :selected="sortcheck(val.code)" :value="val.code">
               {{ val.label }}
             </option>
           </select>
@@ -183,14 +183,39 @@ export default {
   mounted() {
 
     let filter=this.$route.query.filter
-
+    let order=this.$route.query.order
     let selectsort=this.$route.query.sortby
-    console.log(filter,selectsort,"12");
+    // console.log(filter,selectsort,"12");
     if (filter?.length!==undefined || selectsort?.length!==undefined) {
-      // let filter=this.$route.params.filter
-      this.selectSort=selectsort
+      this.getproduct();
+      filter=filter.split(",");
+      let filterArray =[]
+      let filterlist =[]
+      for (let i = 0; i < filter.length; i++) {
+        let split= filter[i].split('-')
+        let value = split[1].replaceAll("%2B"," ")
+        value=value.replaceAll("%26","&")
+        console.log(split,"asas");
+        filterArray.push({"code":split[0],"value":value})
+        filterlist.push(value)
+        
+      }
+      this.filterlist=filterlist
+      this.filterprod=filterArray
+      console.log(filterArray);
 
-      this.order=this.$route.query.order
+
+
+      if (selectsort == "selling_price" && order=="desc") {
+          this.selectSort2="selling_price_high"
+      } else if (selectsort == "selling_price" && order=="asc") {
+        this.selectSort2="selling_price_low"
+      } else {
+        this.selectSort2 = selectsort;
+        this.order="desc"
+      }
+      this.selectSort=selectsort
+      this.order=order
       console.log("with");
       this.getfilterproduct();
     }else{
@@ -227,13 +252,16 @@ export default {
     //Scroll Data load handling
 
     handleScroll() {
-      // let product=document.getElementById("products")
-      // if (   
-      //   document.body.scrollHeight - 1500 <
-      //   document.documentElement.scrollTop
-      // ) {
-      //   this.loadproduct(product.scrollHeight);
-      // }
+      let product=document.getElementById("products")
+      if (   
+        document.body.scrollHeight - 1500 <
+        document.documentElement.scrollTop
+      ) {
+        this.loadproduct(product.scrollHeight);
+      }
+    },
+    sortcheck(val){
+      return val==this.selectSort2
     },
 
     sizes(val) {
