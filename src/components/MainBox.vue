@@ -185,13 +185,14 @@ export default {
     let filter=this.$route.query.filter
     let order=this.$route.query.order
     let selectsort=this.$route.query.sortby
-    // console.log(filter,selectsort,"12");
-    if (filter?.length!==undefined || selectsort?.length!==undefined) {
+    console.log(filter,selectsort,"12");
+    if (filter!==undefined || selectsort!==undefined) {
       this.getproduct();
-      filter=filter.split(",");
-      let filterArray =[]
-      let filterlist =[]
-      for (let i = 0; i < filter.length; i++) {
+      if (filter!==undefined && filter!=="") {
+        filter=filter.split(",");
+        let filterArray =[]
+        let filterlist =[]
+        for (let i = 0; i < filter.length; i++) {
         let split= filter[i].split('-')
         let value = split[1].replaceAll("%2B"," ")
         value=value.replaceAll("%26","&")
@@ -199,14 +200,13 @@ export default {
         filterArray.push({"code":split[0],"value":value})
         filterlist.push(value)
         
-      }
+        }
       this.filterlist=filterlist
       this.filterprod=filterArray
       console.log(filterArray);
-
-
-
-      if (selectsort == "selling_price" && order=="desc") {
+      }
+      if (selectsort!==undefined) {
+        if (selectsort == "selling_price" && order=="desc") {
           this.selectSort2="selling_price_high"
       } else if (selectsort == "selling_price" && order=="asc") {
         this.selectSort2="selling_price_low"
@@ -217,6 +217,11 @@ export default {
       this.selectSort=selectsort
       this.order=order
       console.log("with");
+      }
+
+
+
+      
       this.getfilterproduct();
     }else{
       this.getproduct();
