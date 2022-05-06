@@ -86,7 +86,8 @@
       </div>
 
       <div id="products" v-else class="products">
-        <div class="product" v-for="(val, i) in products" :key="i">
+        <div v-if=" products===undefined">No product available</div>
+        <div class="product" v-else v-for="(val, i) in products" :key="i">
           <img :src="val.image" class="img" width="100%" alt="" />
           <div class="hiddenboxes">
             <div class="addwish">Add to Wishlist</div>
@@ -457,8 +458,13 @@ export default {
           this.count = result.count;
           this.page = this.page + 1;
           this.name = result.name;
+          if (result.products.length===0) {
+            window.scrollTo(0,productheight-1000)
+          }else{
+            window.scrollTo(0,productheight)
+          }
 
-          window.scrollTo(0,productheight)
+          
           this.loader2 = false;
           window.addEventListener("scroll", this.handleScroll);
         });
