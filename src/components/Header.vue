@@ -174,7 +174,7 @@ export default {
      z-index: 100;
     top: 0;
     left: 0;
-    bottom: 60px;
+    bottom: 0px;
     background-color: #f8f8f8;
     
     width: 70%;

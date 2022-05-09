@@ -46,8 +46,15 @@
           <div v-else class="mrp">(inclusive of all taxes)</div>
         </div>
         <div class="second">
-          VIP Club Member get an extra discount of Rs.60 and Free Shipping.
-          <strong class="clickable">Learn More</strong>
+          <p id="hide">
+            VIP Club Member get an extra discount of Rs.60 and Free Shipping.
+            They can be styled in many ways with bottom-wear gilets or drapes.
+            Be it a casual-day-look kurta or the one for the light occasion, W
+            has it all. Get your favourite kurtas and style them the way you
+            want.
+          </p>
+          <strong id="hidetext1" v-on:click="hide(true)" class="clickable">Read More</strong>
+          <strong id="hidetext2" v-on:click="hide(false)" class="clickable">Read less</strong>
         </div>
         <div class="third">
           <div class="color">Colour : {{ productdetails.color }}</div>
@@ -105,7 +112,10 @@
           </div>
         </div>
         <div class="fifth">
-          <div class="d-flex justify-content-between align-items-center" v-on:click="accordion(1)">
+          <div
+            class="d-flex justify-content-between align-items-center"
+            v-on:click="accordion(1)"
+          >
             <p class="bolds">PRODUCT DETAILS</p>
             <div id="iconacc1">+</div>
           </div>
@@ -124,7 +134,10 @@
           </div>
         </div>
         <div class="sixth">
-          <div class="d-flex justify-content-between align-items-center" v-on:click="accordion(2)">
+          <div
+            class="d-flex justify-content-between align-items-center"
+            v-on:click="accordion(2)"
+          >
             <p class="bolds">PRODUCT DETAILS</p>
             <div id="iconacc2">+</div>
           </div>
@@ -140,10 +153,11 @@
             </div>
           </div>
         </div>
+        <div class="sevent"></div>
       </div>
     </div>
     <div class="similarproduct">
-      <h3 class="similar">Similar Products</h3>
+      <h3 class="similar">Best Seller Products</h3>
       <div class="slider_similar_web">
         <VueSlickCarousel
           :slidesToShow="4"
@@ -157,11 +171,17 @@
             v-for="(val, i) in productdetails.bestseller_products"
             :key="i"
           >
-
-             <router-link :to="{ path: val.url_key, params: { val: val.url_key } }" target="_blank" >
-            <img :src="val.image" class="img" width="100%" alt=""/></router-link>
+            <router-link
+              :to="{ path: val.url_key, params: { val: val.url_key } }"
+              target="_blank"
+            >
+              <img :src="val.image" class="img" width="100%" alt=""
+            /></router-link>
             <i class="fa-regular fa-heart heartq"></i>
-            <div class="color"></div>
+            <!-- <div class="color"><div class="colors">
+              </div>
+              <strong class="siz"><u>Sizes</u></strong>
+              </div> -->
             <div class="text">
               {{ val.name }}
             </div>
@@ -180,14 +200,29 @@
         </VueSlickCarousel>
       </div>
       <div class="slider_similar_mobile">
-        <VueSlickCarousel :slidesToShow="2" :slidesToScroll="1" :arrows="true" :infinity="true" :speed="1500"
+        <VueSlickCarousel
+          :slidesToShow="2"
+          :slidesToScroll="1"
+          :arrows="true"
+          :infinity="true"
+          :speed="1500"
         >
-          <div class="products" v-for="(val, i) in productdetails.bestseller_products" :key="i" >
-
-             <router-link :to="{ path: val.url_key, params: { val: val.url_key } }" target="_blank" >
-            <img :src="val.image" class="img" width="100%" alt=""/></router-link>
+          <div
+            class="products"
+            v-for="(val, i) in productdetails.bestseller_products"
+            :key="i"
+          >
+            <router-link
+              :to="{ path: val.url_key, params: { val: val.url_key } }"
+              target="_blank"
+            >
+              <img :src="val.image" class="img" width="100%" alt=""
+            /></router-link>
             <i class="fa-regular fa-heart heartq"></i>
-            <div class="color"></div>
+            <!-- <div class="color"><div class="colors">
+              </div>
+              <strong class="siz"><u>Sizes</u></strong>
+              </div> -->
             <div class="text">
               {{ val.name }}
             </div>
@@ -240,25 +275,23 @@ export default {
     this.getData();
   },
   methods: {
-     accordion(i) {
+    accordion(i) {
       let panel = document.getElementById("panel" + i);
-     
+
       if (panel.style.display === "block") {
         panel.style.display = "none";
-        document.getElementById("iconacc"+i).innerText = "+";
-        
+        document.getElementById("iconacc" + i).innerText = "+";
       } else {
         panel.style.display = "block";
-        document.getElementById("iconacc"+i).innerText= "-";
-        if(i===1){
-        document.getElementById("panel2").style.display = "none";
-        document.getElementById("iconacc2").innerText = "+";
-        }else{
-           document.getElementById("panel1").style.display = "none";
-        document.getElementById("iconacc1").innerText = "+";
+        document.getElementById("iconacc" + i).innerText = "-";
+        if (i === 1) {
+          document.getElementById("panel2").style.display = "none";
+          document.getElementById("iconacc2").innerText = "+";
+        } else {
+          document.getElementById("panel1").style.display = "none";
+          document.getElementById("iconacc1").innerText = "+";
         }
       }
-      
     },
     getData() {
       this.URLParams = this.$route.params.id;
@@ -277,20 +310,46 @@ export default {
     selectsize(id) {
       this.selectedsize = id;
     },
-    customredirect(vals){
+    customredirect(vals) {
       this.$destroy();
-      this.$router.push({ path: vals, params: { val: vals } })
-       
+      this.$router.push({ path: vals, params: { val: vals } });
+    },
+    hide(id){
+      if(id){
+        document.getElementById("hide").style.textOverflow="static"
+        document.getElementById("hide").style.overflow=""
+        document.getElementById("hidetext1").style.display="none"
+        document.getElementById("hidetext2").style.display="block"
+      }else{
+        document.getElementById("hide").style.textOverflow="ellipsis"
+        document.getElementById("hide").style.overflow="hidden"
+        document.getElementById("hidetext2").style.display="none"
+        document.getElementById("hidetext1").style.display="block"
+      }
+      
     }
   },
 };
 </script>
 
 <style scoped>
-p{
+#hide {
+  white-space: nowrap;
+  overflow: hidden;
+text-overflow: ellipsis;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 3;
+  
+}
+.color {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+p {
   margin-bottom: 0;
 }
-.slider_similar_mobile{
+.slider_similar_mobile {
   display: none;
 }
 .slider_similar_web {
@@ -302,6 +361,9 @@ p{
   overflow: hidden;
 
   /* padding: 0px 0px 20px 40px; */
+}
+#hidetext2{
+  display: none;
 }
 .accordion {
   color: #444;
@@ -351,7 +413,6 @@ p{
   font-weight: 600;
 }
 
-
 .div {
   width: 90%;
   align-items: center;
@@ -367,8 +428,8 @@ p{
 .list2 {
   font-size: 12px;
   font-weight: 500;
-display: grid;
-grid-template-columns: repeat(2, 1fr);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 .crumbs {
   font-weight: 500;
@@ -525,42 +586,41 @@ grid-template-columns: repeat(2, 1fr);
   width: 100%;
 }
 @media screen and (max-width: 1040px) {
-
-.product-main {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 60% 40%;
-}
+  .product-main {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 60% 40%;
+  }
 }
 @media screen and (max-width: 768px) {
-  .slider_similar_mobile{
+  .slider_similar_mobile {
     display: block;
     width: 90%;
   }
-  .slider_similar_web{
+  .slider_similar_web {
     display: none;
   }
-.product-main {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.productdetail{
-  margin: 40px;
-}
-.breadcrumbs {
-  padding: 20px 0px;
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-}
-.similarproduct {
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  flex-direction: column;
-}
+  .product-main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .productdetail {
+    margin: 40px;
+  }
+  .breadcrumbs {
+    padding: 20px 0px;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .similarproduct {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+  }
 }
 </style>
