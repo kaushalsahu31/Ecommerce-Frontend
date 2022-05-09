@@ -11,10 +11,15 @@
           <select
             class="dropdown"
             name="sort"
-            v-on:change="changesort"
+            v-on:click="changesort"
             id="sort"
           >
-            <option v-for="(val, i) in  sort" :key="i" :selected="sortcheck(val.code)" :value="val.code">
+            <option
+              v-for="(val, i) in sort"
+              :key="i"
+              :selected="sortcheck(val.code)"
+              :value="val.code"
+            >
               {{ val.label }}
             </option>
           </select>
@@ -27,16 +32,20 @@
           <div class="filterheading">Applied Filters</div>
           <div class="app-filters">
             <div class="appliedfilter" v-for="(val, i) in filterprod" :key="i">
-              <div class="btn btn-secondary btn-size" v-on:click="removefilter(i)">{{ val.value }} <i class="fa-solid fa-xmark"></i></div>
-              
+              <div
+                class="btn btn-secondary btn-size"
+                v-on:click="removefilter(i)"
+              >
+                {{ val.value }} <i class="fa-solid fa-xmark"></i>
+              </div>
             </div>
           </div>
-           <div v-on:click="clearallfilter()" class="btn-size btn btn-danger">
-              Clear all
-            </div>
+          <div v-on:click="clearallfilter()" class="btn-size btn btn-danger">
+            Clear all
+          </div>
         </div>
         <div v-for="(val, i) in filter" :key="i" class="filters">
-          <div class="flex" v-on:click="accordion(i)">
+          <div class="flex" v-on:click="accordion(i, val.filter_lable)">
             <p>{{ val.filter_lable }}</p>
             <img
               src="../assets/arrow.png"
@@ -47,7 +56,7 @@
             />
           </div>
           <div :id="'panel' + i" class="panel">
-            <div v-for="(val2, i2) in val.options" :key="i2" class="options"  >
+            <div v-for="(val2, i2) in val.options" :key="i2" class="options">
               <input
                 :id="val2.value_key"
                 type="checkbox"
@@ -57,8 +66,15 @@
                 :style="{ backgroundColor: val2.value_key }"
                 v-on:click="filterproduct(val2)"
               />
-              <label v-else-if="val2.code === 'size'" v-on:click="filterproduct(val2)" class="text" for=""><div class="sizeboxes" v-if="!checkedState(val2.value)">{{ val2.value }}</div>
-              <div class="sizebold sizeboxes" v-else>{{ val2.value }}</div>
+              <label
+                v-else-if="val2.code === 'size'"
+                v-on:click="filterproduct(val2)"
+                class="text"
+                for=""
+                ><div class="sizeboxes" v-if="!checkedState(val2.value)">
+                  {{ val2.value }}
+                </div>
+                <div class="sizebold sizeboxes" v-else>{{ val2.value }}</div>
               </label>
 
               <input
@@ -86,9 +102,14 @@
       </div>
 
       <div id="products" v-else class="products">
-        <div v-if=" products===undefined">No product available</div>
+        <div v-if="products === undefined">No product available</div>
         <div class="product" v-else v-for="(val, i) in products" :key="i">
-          <img :src="val.image" class="img" width="100%" alt="" />
+          <router-link
+            :to="{ path: val.url_key, params: { val: val.url_key } }"
+          >
+            <img :src="val.image" class="img" width="100%" alt=""
+          /></router-link>
+
           <div class="hiddenboxes">
             <div class="addwish">Add to Wishlist</div>
             <p class="text2">
@@ -121,26 +142,32 @@
           </div>
         </div>
       </div>
-      <div v-if="loader2" class="center web">
-        
-      </div>
-      <div v-if="loader2" class="web center" >
+      <div v-if="loader2" class="center web"></div>
+      <div v-if="loader2" class="web center">
         <div class="spinner-border" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>
       <div id="sorts" class="mobilesort">
-        <div class="flex-d center py-3 border-bottom">
-Sort by:
+        <div class="flex-d center py-3 border-bottom">Sort by:</div>
+
+        <div
+          v-for="(val, i) in sort"
+          :key="i"
+          class="w-100"
+          v-on:click="changesortinmobile(val.code)"
+        >
+          <div
+            v-if="val.code !== selectSort2"
+            class="flex-d center py-3 border-bottom"
+          >
+            {{ val.label }}
+          </div>
+          <div v-else class="flex-d center py-3 border-bottom custom-bg">
+            <strong>{{ val.label }}</strong>
+          </div>
         </div>
-          
-
-            <div v-for="(val, i) in sort" :key="i" class="w-100" v-on:click="changesortinmobile(val.code)">
-
-            <div v-if="val.code!==selectSort2" class="flex-d center py-3 border-bottom" >{{ val.label }}</div><div v-else class="flex-d center py-3 border-bottom custom-bg"><strong>{{ val.label }}</strong></div>
-            </div>
-
-        </div>
+      </div>
       <div class="mobile-filter">
         <div class="filterbutton">
           <div class="sort-mobile" v-on:click="mobileSort">
@@ -158,7 +185,6 @@ Sort by:
 <script>
 import axios from "axios";
 
-
 export default {
   name: "Main-Box",
   data() {
@@ -168,7 +194,7 @@ export default {
       count: 0,
       name: "",
       filterprod: [],
-      filterlist:[],
+      filterlist: [],
       sort: [],
       selectSort: "",
       selectSort2: "",
@@ -182,75 +208,70 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   mounted() {
-
-    let filter=this.$route.query.filter
-    let order=this.$route.query.order
-    let selectsort=this.$route.query.sortby
-    console.log(filter,selectsort,"12");
-    if (filter!==undefined || selectsort!==undefined) {
+    let filter = this.$route.query.filter;
+    let order = this.$route.query.order;
+    let selectsort = this.$route.query.sortby;
+    console.log(filter, selectsort, "12");
+    if (filter !== undefined || selectsort !== undefined) {
       this.getproduct();
-      if (filter!==undefined && filter!=="") {
-        filter=filter.split(",");
-        let filterArray =[]
-        let filterlist =[]
+      if (filter !== undefined && filter !== "") {
+        filter = filter.split(",");
+        let filterArray = [];
+        let filterlist = [];
         for (let i = 0; i < filter.length; i++) {
-        let split= filter[i].split('-')
-        let value = split[1].replaceAll("%2B"," ")
-        value=value.replaceAll("%26","&")
-        console.log(split,"asas");
-        filterArray.push({"code":split[0],"value":value})
-        filterlist.push(value)
-        
+          let split = filter[i].split("-");
+          let value = split[1].replaceAll("%2B", " ");
+          value = value.replaceAll("%26", "&");
+          console.log(split, "asas");
+          filterArray.push({ code: split[0], value: value });
+          filterlist.push(value);
         }
-      this.filterlist=filterlist
-      this.filterprod=filterArray
-      console.log(filterArray);
+        this.filterlist = filterlist;
+        this.filterprod = filterArray;
+        console.log(filterArray);
       }
-      if (selectsort!==undefined) {
-        if (selectsort == "selling_price" && order=="desc") {
-          this.selectSort2="selling_price_high"
-      } else if (selectsort == "selling_price" && order=="asc") {
-        this.selectSort2="selling_price_low"
-      } else {
-        this.selectSort2 = selectsort;
-        this.order="desc"
-      }
-      this.selectSort=selectsort
-      this.order=order
-      console.log("with");
+      if (selectsort !== undefined) {
+        if (selectsort == "selling_price" && order == "desc") {
+          this.selectSort2 = "selling_price_high";
+        } else if (selectsort == "selling_price" && order == "asc") {
+          this.selectSort2 = "selling_price_low";
+        } else {
+          this.selectSort2 = selectsort;
+          this.order = "desc";
+        }
+        this.selectSort = selectsort;
+        this.order = order;
+        console.log("with");
       }
 
-
-
-      
       this.getfilterproduct();
-    }else{
+    } else {
       this.getproduct();
       console.log("without");
     }
-    
+
     window.addEventListener("scroll", this.handleScroll);
   },
   methods: {
     // check if filter is active or not ( for the checkbox)
-    checkedState(value_key){
-      let filter=this.filterlist
-      return filter.includes(value_key)
+    checkedState(value_key) {
+      let filter = this.filterlist;
+      return filter.includes(value_key);
     },
     // remove the filters
-    removefilter(i){
+    removefilter(i) {
       let filters = this.filterprod;
-      let filter=this.filterlist
-      console.log(filter,"aa");
-      filter.splice(i, 1)
+      let filter = this.filterlist;
+      console.log(filter, "aa");
+      filter.splice(i, 1);
       filters.splice(i, 1);
-      this.filterlist= filter
+      this.filterlist = filter;
       this.filterprod = filters;
       this.getfilterproduct();
     },
     // clear all filter
-    clearallfilter(){
-      this.filterlist=[]
+    clearallfilter() {
+      this.filterlist = [];
       this.filterprod = [];
       this.getfilterproduct();
     },
@@ -258,16 +279,16 @@ export default {
     //Scroll Data load handling
 
     handleScroll() {
-      let product=document.getElementById("products")
-      if (   
+      let product = document.getElementById("products");
+      if (
         document.body.scrollHeight - 1500 <
         document.documentElement.scrollTop
       ) {
         this.loadproduct(product.scrollHeight);
       }
     },
-    sortcheck(val){
-      return val==this.selectSort2
+    sortcheck(val) {
+      return val == this.selectSort2;
     },
 
     sizes(val) {
@@ -281,8 +302,8 @@ export default {
         panel.style.display = "none";
       } else {
         panel.style.display = "block";
-        document.getElementById("sorts").style.display="none"
-        document.getElementById("nav-main").style.display="none"
+        document.getElementById("sorts").style.display = "none";
+        document.getElementById("nav-main").style.display = "none";
       }
     },
     // For showing Sort option in mobile
@@ -292,23 +313,34 @@ export default {
         panel.style.display = "none";
       } else {
         panel.style.display = "block";
-        document.getElementById("category").style.display="none"
-        document.getElementById("nav-main").style.display="none"
+        document.getElementById("category").style.display = "none";
+        document.getElementById("nav-main").style.display = "none";
       }
     },
     // Filters accordion function
-    accordion(i) {
+    accordion(i, lable) {
       let panel = document.getElementById("panel" + i);
-      if (panel.style.display === "block") {
-        panel.style.display = "none";
-        document.getElementById("acc" + i).style.transform = "rotate(0deg)";
+      if (lable === "Size") {
+        if (panel.style.display === "flex") {
+          panel.style.display = "none";
+          document.getElementById("acc" + i).style.transform = "rotate(0deg)";
+        } else {
+          panel.style.display = "flex";
+          panel.style.flexWrap = "wrap";
+          document.getElementById("acc" + i).style.transform = "rotate(180deg)";
+        }
       } else {
-        panel.style.display = "block";
-        document.getElementById("acc" + i).style.transform = "rotate(180deg)";
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+          document.getElementById("acc" + i).style.transform = "rotate(0deg)";
+        } else {
+          panel.style.display = "block";
+          document.getElementById("acc" + i).style.transform = "rotate(180deg)";
+        }
       }
     },
     // Sort by function web
-    changesortinmobile(val){
+    changesortinmobile(val) {
       if (val == "selling_price_high") {
         this.selectSort = "selling_price";
         this.order = "desc";
@@ -317,17 +349,17 @@ export default {
         this.order = "asc";
       } else {
         this.selectSort = val;
-        
+
         this.order = "desc";
       }
-      document.getElementById("sorts").style.display="none"
-      this.selectSort2=val;
+      document.getElementById("sorts").style.display = "none";
+      this.selectSort2 = val;
       this.getfilterproduct();
     },
-     // Sort by function mobile
+    // Sort by function mobile
     changesort() {
       let val = document.getElementById("sort").value;
-      this.selectSort2=val;
+      this.selectSort2 = val;
       if (val == "selling_price_high") {
         this.selectSort = "selling_price";
         this.order = "desc";
@@ -372,7 +404,7 @@ export default {
     // for creating the filter string
     filterproduct(cat) {
       let filters = this.filterprod;
-      let filter=this.filterlist
+      let filter = this.filterlist;
       let check = 0;
       for (let i = 0; i < filters.length; i++) {
         if (cat.value == filters[i].value) {
@@ -382,10 +414,10 @@ export default {
         }
       }
       if (check == 0) {
-        filter.push(cat.value)
+        filter.push(cat.value);
         filters.push(cat);
       }
-      this.filterlist=filter
+      this.filterlist = filter;
       this.filterprod = filters;
       this.getfilterproduct();
     },
@@ -405,6 +437,7 @@ export default {
         }
         filter = filter.replaceAll("&", "%26");
         filter = filter.substring(0, filter.length - 1);
+        filter = encodeURIComponent(filter);
       }
       axios
         .get(
@@ -418,9 +451,9 @@ export default {
           this.page = 1;
           this.loader = false;
           const url = new URL(window.location.href);
-          url.searchParams.set( "sortby", this.selectSort );
+          url.searchParams.set("sortby", this.selectSort);
           url.searchParams.set("order", this.order);
-          url.searchParams.set("filter",filter );
+          url.searchParams.set("filter", filter);
 
           window.history.replaceState(null, null, url);
         });
@@ -454,17 +487,16 @@ export default {
         )
         .then((res) => {
           let result = res.data.result;
-          this.products=this.products.concat(result.products);
+          this.products = this.products.concat(result.products);
           this.count = result.count;
           this.page = this.page + 1;
           this.name = result.name;
-          if (result.products.length===0) {
-            window.scrollTo(0,productheight-1000)
-          }else{
-            window.scrollTo(0,productheight)
+          if (result.products.length === 0) {
+            window.scrollTo(0, productheight - 1000);
+          } else {
+            window.scrollTo(0, productheight);
           }
 
-          
           this.loader2 = false;
           window.addEventListener("scroll", this.handleScroll);
         });
@@ -474,17 +506,17 @@ export default {
 </script>
 
 <style scoped>
-.custom-bg{
+.custom-bg {
   background-color: #d9d9d9;
 }
-p{
+p {
   margin-bottom: 0px;
 }
-.cross{
+.cross {
   outline: none;
   border: none;
 }
-.center{
+.center {
   display: flex;
   justify-content: center;
   width: 100%;
@@ -505,7 +537,7 @@ p{
   border: 0.15em solid currentColor;
   border-radius: 50%;
 }
-.mobilesort{
+.mobilesort {
   display: none;
 }
 .appliedfilter {
@@ -516,7 +548,7 @@ p{
   margin-left: 0px;
 }
 .color:checked {
-  color: rgb(255, 255, 255); 
+  color: rgb(255, 255, 255);
   border: 2px solid #1d1d1d;
   /* padding: 9px; */
 }
@@ -525,7 +557,7 @@ p{
   font-size: 20px;
   font-weight: 500;
 }
-.sizeboxes{
+.sizeboxes {
   border: 1px solid #858585;
   justify-content: center;
   display: flex;
@@ -533,13 +565,12 @@ p{
   height: 30px;
   width: 30px;
 }
-.btn-size{
+.btn-size {
   font-size: 14px;
 }
-.sizebold{
+.sizebold {
   font-weight: 600;
   border: 2px solid #858585;
-
 }
 
 .loader {
@@ -684,7 +715,7 @@ p{
 .panel {
   display: none;
   overflow: hidden;
-  
+
   padding: 0px 0px 20px 40px;
 }
 .accordion {
@@ -726,8 +757,8 @@ p{
     display: none;
   }
   .product:hover .hiddenboxes {
-  display: none;
-}
+    display: none;
+  }
   .mobile_text {
     display: grid;
     position: relative;
@@ -739,7 +770,7 @@ p{
   .web_text {
     display: none;
   }
-  .web{
+  .web {
     display: none;
   }
 
@@ -782,7 +813,7 @@ p{
     overflow-y: scroll;
     width: 70%;
   }
-  .mobilesort{
+  .mobilesort {
     display: none;
     background-color: #f8f8f8;
     position: fixed;

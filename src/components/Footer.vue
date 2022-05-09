@@ -260,7 +260,6 @@ export default {
   }
   .footer {
     grid-template-columns: 100%;
-    margin-bottom: 60px;
   }
   .icon {
     display: flex;
