@@ -3,16 +3,25 @@
     <Header />
     <div class="breadcrumbs">
       <div class="div">
-        <router-link to="/" class="link">Home</router-link> > <div class="crumbs"> {{productdetails.name}}</div>
+        <router-link to="/" class="link">Home</router-link> >
+        <div class="crumbs">{{ productdetails.name }}</div>
       </div>
-      
     </div>
     <div class="product-main">
       <div class="crosal">
-        <VueSlickCarousel :slidesToShow= 2
-          :slidesToScroll= 1 :arrows="true" :infinity="true" :speed="2000" :autoplaySpeed="2000" :autoplay="true" :dots="true" >
-          <div v-for="(val, i) in gallery" :key="i" class="crozalimg"><img :src="val.image" alt="" /></div>
-          
+        <VueSlickCarousel
+          :slidesToShow="2"
+          :slidesToScroll="1"
+          :arrows="true"
+          :infinity="true"
+          :speed="3000"
+          :autoplaySpeed="2000"
+          :autoplay="true"
+          :dots="true"
+        >
+          <div v-for="(val, i) in gallery" :key="i" class="crozalimg">
+            <img :src="val.image" alt="" />
+          </div>
         </VueSlickCarousel>
       </div>
       <div class="productdetail">
@@ -21,15 +30,20 @@
           <div class="stars"></div>
           <div class="price">
             ₹{{ productdetails.selling_price }}
-            <span v-if="productdetails.selling_price!==productdetails.price" class="discount">{{ productdetails.discount }}% off</span>
+            <span
+              v-if="productdetails.selling_price !== productdetails.price"
+              class="discount"
+              >{{ productdetails.discount }}% off</span
+            >
           </div>
-          <div v-if="productdetails.selling_price!==productdetails.price" class="mrp">
+          <div
+            v-if="productdetails.selling_price !== productdetails.price"
+            class="mrp"
+          >
             MRP:₹<strike>{{ productdetails.price }}</strike> (inclusive of all
             taxes)
           </div>
-          <div v-else class="mrp">
-            (inclusive of all taxes)
-          </div>
+          <div v-else class="mrp">(inclusive of all taxes)</div>
         </div>
         <div class="second">
           VIP Club Member get an extra discount of Rs.60 and Free Shipping.
@@ -47,19 +61,27 @@
             </div>
           </div>
           <div class="size">
-            <div class="label">SIZE : L</div>
+            <div class="label">SIZE : {{ selectedsize }}</div>
             <strong><u>SIZE CHART</u></strong>
           </div>
           <div class="sizes">
-            <div class="sizelist" v-for="(val, i) in size.split(',')" :key="i">
-              {{ val.slice(1, val.length - 1) }}
+            <div
+              class="sizelist"
+              v-for="(val, i) in size.split(',')"
+              :key="i"
+              v-on:click="selectsize(val.slice(1, val.length - 1))"
+            >
+              <strong v-if="val.slice(1, val.length - 1) === selectedsize">{{
+                val.slice(1, val.length - 1)
+              }}</strong>
+              <span v-else>{{ val.slice(1, val.length - 1) }}</span>
             </div>
           </div>
-          <div class="fitinfo">
+          <div v-if="productdetails.fit" class="fitinfo">
             Fit info
-            <div v-if="productdetails.fit!==''" class="likebtns">{{ productdetails.fit }}</div>
+            <div class="likebtns">{{ productdetails.fit }}</div>
           </div>
-          <div class="modals">
+          <div v-if="productdetails.fit" class="modals">
             Modal
             <div class="likebtns">{{ productdetails.fit }}</div>
             <div class="likebtns">{{ productdetails.fit }}</div>
@@ -83,13 +105,11 @@
           </div>
         </div>
         <div class="fifth">
-          <div class="d-flex justify-content-between" v-on:click="accordion(i )">
+          <div class="d-flex justify-content-between" v-on:click="accordion(1)">
             <p class="bolds">PRODUCT DETAILS</p>
-            <div class="iconacc">
-              -
-            </div>
+            <div id="iconacc1">+</div>
           </div>
-          <div :id="'panel' + i"  class="panel">
+          <div :id="'panel' + 1" class="panel">
             <ul class="list">
               <li>65% viscose, 35% nylon</li>
               <li>Made in India</li>
@@ -103,19 +123,89 @@
             </ul>
           </div>
         </div>
+        <div class="sixth">
+          <div class="d-flex justify-content-between" v-on:click="accordion(2)">
+            <p class="bolds">PRODUCT DETAILS</p>
+            <div id="iconacc2">+</div>
+          </div>
+          <div :id="'panel' + 2" class="panel">
+            <div class="list2">
+              <div
+                class="attrib"
+                v-for="(val, i) in productdetails.visible_attributes"
+                :key="i"
+              >
+                <strong>{{ val.label }}</strong> : {{ val.value }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-     <div class="similarproduct">
-          <h3 class="similar">Similar Products</h3>
-          <div class="slider_similar">
-             <VueSlickCarousel :slidesToShow= 4 :slidesToScroll= 1 :arrows="true" :infinity="true" :speed="2000" >
-                 <div v-for="(val, i) in productdetails.similar_products" :key="i" >
-                   <!-- <img :src="val.image" alt="" /> -->
-                   hello
-                 </div>
-            </VueSlickCarousel>
+    <div class="similarproduct">
+      <h3 class="similar">Similar Products</h3>
+      <div class="slider_similar_web">
+        <VueSlickCarousel
+          :slidesToShow="4"
+          :slidesToScroll="1"
+          :arrows="true"
+          :infinity="true"
+          :speed="1500"
+        >
+          <div
+            class="products"
+            v-for="(val, i) in productdetails.bestseller_products"
+            :key="i"
+          >
+
+             <router-link :to="{ path: val.url_key, params: { val: val.url_key } }" target="_blank" >
+            <img :src="val.image" class="img" width="100%" alt=""/></router-link>
+            <i class="fa-regular fa-heart heartq"></i>
+            <div class="color"></div>
+            <div class="text">
+              {{ val.name }}
+            </div>
+            <div class="bottem_price">
+              <div class="price2">
+                ₹{{ val.selling_price }}
+                <span v-if="val.selling_price !== val.price" class="mrp">
+                  ₹<strike>{{ val.price }}</strike></span
+                >
+                <span v-if="val.selling_price !== val.price" class="discount">
+                  {{ val.discount }}% off</span
+                >
+              </div>
+            </div>
           </div>
+        </VueSlickCarousel>
       </div>
+      <div class="slider_similar_mobile">
+        <VueSlickCarousel :slidesToShow="2" :slidesToScroll="1" :arrows="true" :infinity="true" :speed="1500"
+        >
+          <div class="products" v-for="(val, i) in productdetails.bestseller_products" :key="i" >
+
+             <router-link :to="{ path: val.url_key, params: { val: val.url_key } }" target="_blank" >
+            <img :src="val.image" class="img" width="100%" alt=""/></router-link>
+            <i class="fa-regular fa-heart heartq"></i>
+            <div class="color"></div>
+            <div class="text">
+              {{ val.name }}
+            </div>
+            <div class="bottem_price">
+              <div class="price2">
+                ₹{{ val.selling_price }}
+                <span v-if="val.selling_price !== val.price" class="mrp">
+                  ₹<strike>{{ val.price }}</strike></span
+                >
+                <span v-if="val.selling_price !== val.price" class="discount">
+                  {{ val.discount }}% off</span
+                >
+              </div>
+            </div>
+          </div>
+        </VueSlickCarousel>
+      </div>
+    </div>
 
     <Footer />
   </div>
@@ -143,14 +233,35 @@ export default {
       gallery: [],
       productdetails: {},
       size: [],
+      selectedsize: "L",
     };
   },
   created() {
-    this.URLParams = this.$route.params.id;
     this.getData();
   },
   methods: {
+     accordion(i) {
+      let panel = document.getElementById("panel" + i);
+     
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+        document.getElementById("iconacc"+i).innerText = "+";
+        
+      } else {
+        panel.style.display = "block";
+        document.getElementById("iconacc"+i).innerText= "-";
+        if(i===1){
+        document.getElementById("panel2").style.display = "none";
+        document.getElementById("iconacc2").innerText = "+";
+        }else{
+           document.getElementById("panel1").style.display = "none";
+        document.getElementById("iconacc1").innerText = "+";
+        }
+      }
+      
+    },
     getData() {
+      this.URLParams = this.$route.params.id;
       axios
         .get(
           `https://pim.wforwoman.com/pim/pimresponse.php/?service=product&store=1&url_key=${this.URLParams}`
@@ -163,12 +274,68 @@ export default {
           console.log(result.gallery);
         });
     },
+    selectsize(id) {
+      this.selectedsize = id;
+    },
+    customredirect(vals){
+      this.$destroy();
+      this.$router.push({ path: vals, params: { val: vals } })
+       
+    }
   },
 };
 </script>
 
 <style scoped>
-.similarproduct{
+.slider_similar_mobile{
+  display: none;
+}
+.slider_similar_web {
+  width: 90%;
+  display: block;
+}
+.panel {
+  display: none;
+  overflow: hidden;
+
+  padding: 0px 0px 20px 40px;
+}
+.accordion {
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 5s;
+}
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #8a8a8a;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 8px 0px;
+}
+.products {
+  padding: 20px;
+  width: 100%;
+  position: relative;
+}
+.attrib {
+  text-align: start;
+  margin: 3px;
+}
+.heartq {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  color: rgb(51, 51, 51);
+  font-size: 20px;
+}
+.similarproduct {
   padding: 50px;
   display: flex;
   justify-content: center;
@@ -176,38 +343,37 @@ export default {
   width: 100%;
   flex-direction: column;
 }
-.similar{
+.similar {
   font-size: 24px;
   font-weight: 600;
-
-}
-.slider_similar{
-  width: 90%;
-
 }
 
-.div{
+
+.div {
   width: 90%;
   align-items: center;
   margin: 0px auto;
   display: flex;
   color: #565656;
   font-size: 12px;
-
-
 }
-.list{
+.list {
   font-size: 12px;
   font-weight: 500;
 }
-.crumbs{
+.list2 {
+  font-size: 12px;
+  font-weight: 500;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+}
+.crumbs {
   font-weight: 500;
   color: black;
   margin-left: 5px;
 }
 
-
-.breadcrumbs{
+.breadcrumbs {
   padding: 20px 0px;
   display: grid;
   grid-template-columns: 70% 30%;
@@ -221,7 +387,7 @@ export default {
 .custom-container {
   width: 100%;
 }
-.bolds{
+.bolds {
   font-size: 12px;
   font-weight: 600;
 }
@@ -230,7 +396,7 @@ export default {
   display: grid;
   grid-template-columns: 70% 30%;
 }
-.link{
+.link {
   text-decoration: none;
   margin-right: 5px;
   color: #565656;
@@ -242,7 +408,8 @@ export default {
 .second,
 .third,
 .forth,
-.fifth {
+.fifth,
+.sixth {
   border-bottom: 1px #bebebe solid;
   padding: 20px 0px;
 }
@@ -256,6 +423,12 @@ export default {
   font-size: 20px;
   font-weight: 500;
 }
+.price2 {
+  margin: 8px 0px;
+  margin-bottom: 2px;
+  font-size: 16px;
+  font-weight: 500;
+}
 .discount {
   color: #eb0c0c;
 }
@@ -266,14 +439,13 @@ export default {
 .second {
   font-size: 13px;
 }
-.crosal{
+.crosal {
   width: 90%;
   align-items: center;
   margin: 0px auto;
-
-
 }
-.crozalimg, .crozalimg img{
+.crozalimg,
+.crozalimg img {
   width: 100%;
 }
 .mrp {
@@ -348,5 +520,43 @@ export default {
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+@media screen and (max-width: 1040px) {
+.product-main {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 60% 40%;
+}
+}
+@media screen and (max-width: 768px) {
+  .slider_similar_mobile{
+    display: block;
+    width: 90%;
+  }
+  .slider_similar_web{
+    display: none;
+  }
+.product-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.productdetail{
+  margin: 40px;
+}
+.breadcrumbs {
+  padding: 20px 0px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+.similarproduct {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
 }
 </style>
