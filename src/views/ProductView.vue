@@ -105,7 +105,7 @@
           </div>
         </div>
         <div class="fifth">
-          <div class="d-flex justify-content-between" v-on:click="accordion(1)">
+          <div class="d-flex justify-content-between align-items-center" v-on:click="accordion(1)">
             <p class="bolds">PRODUCT DETAILS</p>
             <div id="iconacc1">+</div>
           </div>
@@ -124,7 +124,7 @@
           </div>
         </div>
         <div class="sixth">
-          <div class="d-flex justify-content-between" v-on:click="accordion(2)">
+          <div class="d-flex justify-content-between align-items-center" v-on:click="accordion(2)">
             <p class="bolds">PRODUCT DETAILS</p>
             <div id="iconacc2">+</div>
           </div>
@@ -287,6 +287,9 @@ export default {
 </script>
 
 <style scoped>
+p{
+  margin-bottom: 0;
+}
 .slider_similar_mobile{
   display: none;
 }
@@ -298,7 +301,7 @@ export default {
   display: none;
   overflow: hidden;
 
-  padding: 0px 0px 20px 40px;
+  /* padding: 0px 0px 20px 40px; */
 }
 .accordion {
   color: #444;
@@ -522,6 +525,7 @@ grid-template-columns: repeat(2, 1fr);
   width: 100%;
 }
 @media screen and (max-width: 1040px) {
+
 .product-main {
   width: 100%;
   display: grid;
