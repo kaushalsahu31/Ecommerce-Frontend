@@ -47,6 +47,10 @@
 
         <div class="footer-search">
           <div class="search">
+            <!-- <div class="test">
+              <input type="text" placeholder="Enter your email id..">
+              <button>subscribe</button>
+            </div> -->
             <div class="input">
               <input type="text" placeholder="Enter your email id.." />
             </div>
@@ -123,7 +127,23 @@ export default {
 .click{
   cursor: pointer;
 }
+.test{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 3px solid black;
 
+}
+.test input{
+  background: transparent;
+  outline: none;
+  border: none;
+}
+.test button{
+  background: transparent;
+  outline: none;
+  border: none;
+}
 .footer {
   display: grid;
   width: 100%;
