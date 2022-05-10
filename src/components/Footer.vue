@@ -28,20 +28,20 @@
         <div class="footer-widget">
           <div>
             <p class="bold2">ABOUT</p>
-            <p class="footer-text">About Us</p>
-            <p class="footer-text">Store Locator</p>
-            <p class="footer-text">Career</p>
-            <p class="footer-text">Become a partner</p>
-            <p class="footer-text">Contact Us</p>
-            <p class="footer-text">Blog</p>
+              <p class="footer-text"><a href="#"> About Us </a></p>
+              <p class="footer-text"><a href="#"> Store Locator</a></p>
+              <p class="footer-text"><a href="#"> Career</a></p>
+              <p class="footer-text"><a href="#"> Become a partner</a></p>
+              <p class="footer-text"><a href="#"> Contact Us</a></p>
+              <p class="footer-text"><a href="#"> Blog</a></p>
           </div>
           <div>
             <p class="bold2">SUPPORT</p>
-            <p class="footer-text">Privacy Policy</p>
-            <p class="footer-text">Shipping Policy</p>
-            <p class="footer-text">Return / Exchange Policy</p>
-            <p class="footer-text">Track Order</p>
-            <p class="footer-text">Return & Exchange</p>
+            <p class="footer-text"><a href="#"> Privacy Policy</a></p>
+            <p class="footer-text"><a href="#"> Shipping Policy</a></p>
+            <p class="footer-text"><a href="#"> Return / Exchange Policy</a></p>
+            <p class="footer-text"><a href="#"> Track Order</a></p>
+            <p class="footer-text"><a href="#"> Return & Exchange</a></p>
           </div>
         </div>
 
@@ -53,31 +53,31 @@
             <div class="submit">Submit</div>
           </div>
           <div class="icon">
-            <i class="space fa-brands fa-facebook-f"></i>
-            <i class="fa-brands fa-instagram"></i>
-            <i class="fa-brands fa-twitter"></i>
+           <a href="#"><i class="space fa-brands fa-facebook-f"></i></a> 
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
           </div>
         </div>
         <div class="footer-widget-mobile">
           <div class="footerspace">
             <div class="bold2" v-on:click="footeraccoudion(1)">ABOUT <span id="accfooter1">+</span></div>
             <div class="panel" id="footer-w-1">
-              <p class="footer-text">About Us</p>
-              <p class="footer-text">Store Locator</p>
-              <p class="footer-text">Career</p>
-              <p class="footer-text">Become a partner</p>
-              <p class="footer-text">Contact Us</p>
-              <p class="footer-text">Blog</p>
+              <p class="footer-text"><a href="#"> About Us </a></p>
+              <p class="footer-text"><a href="#"> Store Locator</a></p>
+              <p class="footer-text"><a href="#"> Career</a></p>
+              <p class="footer-text"><a href="#"> Become a partner</a></p>
+              <p class="footer-text"><a href="#"> Contact Us</a></p>
+              <p class="footer-text"><a href="#"> Blog</a></p>
             </div>
           </div>
           <div class="footerspace">
             <div class="bold2" v-on:click="footeraccoudion(2)">SUPPORT <span id="accfooter2">+</span></div>
             <div class="panel" id="footer-w-2">
-              <p class="footer-text">Privacy Policy</p>
-              <p class="footer-text">Shipping Policy</p>
-              <p class="footer-text">Return / Exchange Policy</p>
-              <p class="footer-text">Track Order</p>
-              <p class="footer-text">Return & Exchange</p>
+            <p class="footer-text"><a href="#"> Privacy Policy</a></p>
+            <p class="footer-text"><a href="#"> Shipping Policy</a></p>
+            <p class="footer-text"><a href="#"> Return / Exchange Policy</a></p>
+            <p class="footer-text"><a href="#"> Track Order</a></p>
+            <p class="footer-text"><a href="#"> Return & Exchange</a></p>
             </div>
           </div>
         </div>
@@ -178,6 +178,12 @@ export default {
   font-size: 14px;
   word-spacing: 1.5px;
 }
+.footer-text a{
+ text-decoration: none;
+ color: black;
+ list-style: none;
+
+}
 .footerlast{
   display: grid;
   grid-template-columns: 20% 60% 20%;
@@ -193,6 +199,7 @@ export default {
 }
 .submit {
   background-color: black;
+  cursor: pointer;
   color: #ffcb05;
   padding: 20px 0px;
   text-align: center;

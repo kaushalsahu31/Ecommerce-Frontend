@@ -7,9 +7,12 @@
         <div class="crumbs">{{ productdetails.name }}</div>
       </div>
     </div>
-    <div class="product-main">
+    <div id="main" class="product-main">
       <div class="crosal">
-        <VueSlickCarousel
+        <div id="slider">
+
+        
+        <VueSlickCarousel 
           :slidesToShow="2"
           :slidesToScroll="1"
           :arrows="true"
@@ -23,6 +26,7 @@
             <img :src="val.image" alt="" />
           </div>
         </VueSlickCarousel>
+      </div>
       </div>
       <div class="productdetail">
         <div class="topbox">
@@ -46,13 +50,16 @@
           <div v-else class="mrp">(inclusive of all taxes)</div>
         </div>
         <div class="second">
-          <p id="hide">
-            VIP Club Member get an extra discount of Rs.60 and Free Shipping.
-            They can be styled in many ways with bottom-wear gilets or drapes.
+          
+             <span id="show">VIP Club Member get an extra discount of Rs.60 and Free Shipping.</span>
+            <span id="hide">
+             VIP Club Member get an extra discount of Rs.60 and Free Shipping. They can be styled in many ways with bottom-wear gilets or drapes.
             Be it a casual-day-look kurta or the one for the light occasion, W
             has it all. Get your favourite kurtas and style them the way you
             want.
-          </p>
+            </span>
+            
+          
           <strong id="hidetext1" v-on:click="hide(true)" class="clickable">Read More</strong>
           <strong id="hidetext2" v-on:click="hide(false)" class="clickable">Read less</strong>
         </div>
@@ -60,11 +67,11 @@
           <div class="color">Colour : {{ productdetails.color }}</div>
           <div class="variation">
             <div
-              v-for="(val, i) in productdetails.variation"
+              v-for="(val, i) in colorVarient"
               :key="i"
               class="variationImg"
             >
-              <img :src="val.image" alt="" />
+              <img :src="val.image_url"  v-on:click="changecolor(val.color_name)"  alt="" />
             </div>
           </div>
           <div class="size">
@@ -73,15 +80,15 @@
           </div>
           <div class="sizes">
             <div
-              class="sizelist"
+              
               v-for="(val, i) in size.split(',')"
               :key="i"
               v-on:click="selectsize(val.slice(1, val.length - 1))"
             >
-              <strong v-if="val.slice(1, val.length - 1) === selectedsize">{{
+              <div class="sizelist" v-if="val.slice(1, val.length - 1) === selectedsize">{{
                 val.slice(1, val.length - 1)
-              }}</strong>
-              <span v-else>{{ val.slice(1, val.length - 1) }}</span>
+              }}</div>
+              <div class="sizelist2" v-else  >{{ val.slice(1, val.length - 1) }}</div>
             </div>
           </div>
           <div v-if="productdetails.fit" class="fitinfo">
@@ -113,7 +120,7 @@
         </div>
         <div class="fifth">
           <div
-            class="d-flex justify-content-between align-items-center"
+            class="d-flex justify-content-between align-items-center paddings"
             v-on:click="accordion(1)"
           >
             <p class="bolds">PRODUCT DETAILS</p>
@@ -135,10 +142,10 @@
         </div>
         <div class="sixth">
           <div
-            class="d-flex justify-content-between align-items-center"
+            class="d-flex justify-content-between align-items-center paddings"
             v-on:click="accordion(2)"
           >
-            <p class="bolds">PRODUCT DETAILS</p>
+            <p class="bolds">KNOW ABOUT PRODUCT</p>
             <div id="iconacc2">+</div>
           </div>
           <div :id="'panel' + 2" class="panel">
@@ -153,7 +160,14 @@
             </div>
           </div>
         </div>
-        <div class="sevent"></div>
+        <div class="seventh">
+          <div class="imput">
+            <i class="fa-solid fa-location-dot"></i>
+            <input placeholder="Enter delivery pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" inputmode="numeric"  id="check" type="text" maxlength="6" autocomplete="off" class="location" value="">
+
+            <button class="button"><strong>check pincode</strong></button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="similarproduct">
@@ -178,10 +192,6 @@
               <img :src="val.image" class="img" width="100%" alt=""
             /></router-link>
             <i class="fa-regular fa-heart heartq"></i>
-            <!-- <div class="color"><div class="colors">
-              </div>
-              <strong class="siz"><u>Sizes</u></strong>
-              </div> -->
             <div class="text">
               {{ val.name }}
             </div>
@@ -241,6 +251,84 @@
         </VueSlickCarousel>
       </div>
     </div>
+    <div v-if="productdetails.similar_products!==''" class="similarproduct">
+       <h3 class="similar">Similar Products</h3>
+      <div class="slider_similar_web">
+        <VueSlickCarousel
+          :slidesToShow="4"
+          :slidesToScroll="1"
+          :arrows="true"
+          :infinity="true"
+          :speed="1500"
+        >
+          <div
+            class="products"
+            v-for="(val, i) in productdetails.similar_products"
+            :key="i"
+          >
+            <router-link
+              :to="{ path: val.url_key, params: { val: val.url_key } }"
+              target="_blank"
+            >
+              <img :src="val.image" class="img" width="100%" alt=""
+            /></router-link>
+            <i class="fa-regular fa-heart heartq"></i>
+            <div class="text">
+              {{ val.name }}
+            </div>
+            <div class="bottem_price">
+              <div class="price2">
+                ₹{{ val.selling_price }}
+                <span v-if="val.selling_price !== val.price" class="mrp">
+                  ₹<strike>{{ val.price }}</strike></span
+                >
+                <span v-if="val.selling_price !== val.price" class="discount">
+                  {{ val.discount }}% off</span
+                >
+              </div>
+            </div>
+          </div>
+        </VueSlickCarousel>
+      </div>
+       <div class="slider_similar_mobile">
+        <VueSlickCarousel
+          :slidesToShow="2"
+          :slidesToScroll="1"
+          :arrows="true"
+          :infinity="true"
+          :speed="1500"
+        >
+          <div
+            class="products"
+            v-for="(val, i) in productdetails.similar_products"
+            :key="i"
+          >
+            <router-link
+              :to="{ path: val.url_key, params: { val: val.url_key } }"
+              target="_blank"
+            >
+              <img :src="val.image" class="img" width="100%" alt=""
+            /></router-link>
+            <i class="fa-regular fa-heart heartq"></i>
+
+            <div class="text">
+              {{ val.name }}
+            </div>
+            <div class="bottem_price">
+              <div class="price2">
+                ₹{{ val.selling_price }}
+                <span v-if="val.selling_price !== val.price" class="mrp">
+                  ₹<strike>{{ val.price }}</strike></span
+                >
+                <span v-if="val.selling_price !== val.price" class="discount">
+                  {{ val.discount }}% off</span
+                >
+              </div>
+            </div>
+          </div>
+        </VueSlickCarousel>
+      </div>
+    </div>
 
     <Footer />
   </div>
@@ -254,6 +342,7 @@ import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import axios from "axios";
+
 
 export default {
   name: "Product-View",
@@ -269,12 +358,42 @@ export default {
       productdetails: {},
       size: [],
       selectedsize: "L",
+      colorVarient: [
+        {
+          image_url: "https://wforwoman.gumlet.io/product/21AUW16786-117537/665/21AUW16786-117537_1.JPG",
+          color_name: "Blue"
+        },
+        {
+          image_url: "https://wforwoman.gumlet.io/product/21AUW16783-117388/665/21AUW16783-117388.jpg",
+          color_name: "Pink"
+        },
+        {
+          image_url: "https://wforwoman.gumlet.io/product/20AUW13770-114732/665/20AUW13770-114732_1.JPG",
+          color_name: "Black"
+        }
+      ],
     };
   },
   created() {
     this.getData();
+    // window.addEventListener("scroll", this.handleScroll);
   },
+//   destroyed(){
+// window.removeEventListener("scroll", this.handleScroll);
+//   },
   methods: {
+    changecolor(val){
+      this.productdetails.color=val
+    },
+    // handleScroll(){
+    //   let slider = document.getElementById("slider")
+    //   console.log(slider); 
+    //   // if (this.$refs.input.height< this.$refs.main.height-100 ) {
+        
+    //   // }
+      
+    // },
+    
     accordion(i) {
       let panel = document.getElementById("panel" + i);
 
@@ -316,29 +435,38 @@ export default {
     },
     hide(id){
       if(id){
-        document.getElementById("hide").style.textOverflow="static"
-        document.getElementById("hide").style.overflow=""
-        document.getElementById("hidetext1").style.display="none"
+        document.getElementById("hide").style.display="flex"
+        document.getElementById("show").style.display="none"
         document.getElementById("hidetext2").style.display="block"
+        document.getElementById("hidetext1").style.display="none"
+        
+
       }else{
-        document.getElementById("hide").style.textOverflow="ellipsis"
-        document.getElementById("hide").style.overflow="hidden"
+        document.getElementById("show").style.display="flex"
+        document.getElementById("hide").style.display="none"
         document.getElementById("hidetext2").style.display="none"
         document.getElementById("hidetext1").style.display="block"
       }
       
     }
+    
+       
+    
   },
 };
 </script>
 
 <style scoped>
+.smooth{
+  color: white;
+  background-color: #000000;
+}
+.seventh{
+  padding: 20px !important;
+}
+
 #hide {
-  white-space: nowrap;
-  overflow: hidden;
-text-overflow: ellipsis;
--webkit-box-orient: vertical;
--webkit-line-clamp: 3;
+display: none;
   
 }
 .color {
@@ -365,6 +493,12 @@ p {
 #hidetext2{
   display: none;
 }
+.location{
+  border: none;
+  outline: none;
+  font-size: 12px;
+  background: transparent;
+}
 .accordion {
   color: #444;
   cursor: pointer;
@@ -383,6 +517,22 @@ p {
   font-size: 13px;
   font-weight: 600;
   margin: 8px 0px;
+}
+.imput{
+  padding: 10px 0px;
+  border-radius: 10px;
+  align-items: center;
+  /* margin: 0px 10px; */
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #ECECEC;
+}
+.button{
+  outline: none;
+  background: none;
+  font-size: 12px;
+  border: none;
 }
 .products {
   padding: 20px;
@@ -472,10 +622,17 @@ p {
 .second,
 .third,
 .forth,
-.fifth,
-.sixth {
+.seventh {
   border-bottom: 1px #bebebe solid;
   padding: 20px 0px;
+}
+.fifth,
+.sixth{
+    border-bottom: 1px #bebebe solid;
+  
+}
+.paddings{
+padding: 20px 0px;
 }
 .heading {
   font-size: 16px;
@@ -536,9 +693,23 @@ p {
   flex-wrap: wrap;
   padding: 20px 0px;
 }
+.sizelist2{
+  border: 1px solid rgb(182, 182, 182);
+  border-radius: 10px;
+  height: 42px;
+  width: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
 .sizelist {
   border: 1px solid rgb(182, 182, 182);
   border-radius: 10px;
+  background-color: black;
+  color: white;
   height: 42px;
   width: 42px;
   display: flex;
@@ -593,6 +764,9 @@ p {
   }
 }
 @media screen and (max-width: 768px) {
+  .list2 {
+  grid-template-columns: repeat(1, 1fr);
+}
   .slider_similar_mobile {
     display: block;
     width: 90%;
@@ -621,6 +795,15 @@ p {
     align-items: center;
     width: 100%;
     flex-direction: column;
+  }
+  .tobag{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    background-color: #F8F8F8;
+    z-index: 10;
   }
 }
 </style>
