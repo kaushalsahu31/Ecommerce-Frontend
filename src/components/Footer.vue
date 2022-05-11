@@ -91,6 +91,7 @@
         <div class="f-text">Copyright © 2022 Being Human Clothing. All rights reserved</div>
         <div></div>
       </div>
+      <div v-if="space" class="spacez"></div>
     </div>
   </div>
 </template>
@@ -98,6 +99,7 @@
 <script>
 export default {
   name: "Top-Footer",
+  props: ['space'],
   methods:{
     footeraccoudion(id){
       let panel = document.getElementById("footer-w-" + id);
@@ -117,6 +119,7 @@ export default {
 </script>
 
 <style scoped>
+
 .footer-widget-mobile {
   display: none;
 }
@@ -259,6 +262,9 @@ export default {
   margin-top: 30px;
 }
 @media screen and (max-width: 780px) {
+  .spacez{
+    height: 60px;
+  }
   .footer-widget-mobile {
     display: grid;
   }
@@ -318,6 +324,7 @@ export default {
   }
   .footer-bottem {
     padding: 0px 0px;
+    margin: 10px;
     border-top: 1px solid #9b9b9b;
   }
   .panel {
@@ -337,6 +344,9 @@ export default {
   .footerspace{
     padding: 20px;
     border-bottom: 1px solid #9b9b9b;
+  }
+  .footer-top, .footerlast{
+    margin: 10px;
   }
 }
 </style>

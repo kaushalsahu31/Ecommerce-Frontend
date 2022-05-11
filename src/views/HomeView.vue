@@ -2,7 +2,7 @@
   <div class="home">
     <Header />
     <MainBox/>
-    <Footer />
+    <Footer space="true" />
   </div>
 </template>
 

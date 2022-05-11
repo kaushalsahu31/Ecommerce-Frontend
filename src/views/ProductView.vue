@@ -51,17 +51,17 @@
         </div>
         <div class="second">
           
-             <span id="show">VIP Club Member get an extra discount of Rs.60 and Free Shipping.</span>
+             <span id="show">VIP Club Member get an extra discount of Rs.60 and Free Shipping. <strong id="hidetext1" v-on:click="hide(true)" class="clickable">Read More</strong></span>
             <span id="hide">
              VIP Club Member get an extra discount of Rs.60 and Free Shipping. They can be styled in many ways with bottom-wear gilets or drapes.
             Be it a casual-day-look kurta or the one for the light occasion, W
             has it all. Get your favourite kurtas and style them the way you
-            want.
+            want. <strong id="hidetext2" v-on:click="hide(false)" class="clickable">Read less</strong>
             </span>
             
           
-          <strong id="hidetext1" v-on:click="hide(true)" class="clickable">Read More</strong>
-          <strong id="hidetext2" v-on:click="hide(false)" class="clickable">Read less</strong>
+          
+          
         </div>
         <div class="third">
           <div class="color">Colour : {{ productdetails.color }}</div>
@@ -70,8 +70,12 @@
               v-for="(val, i) in colorVarient"
               :key="i"
               class="variationImg"
+
             >
-              <img :src="val.image_url"  v-on:click="changecolor(val.color_name)"  alt="" />
+              <img :src="val.image_url" v-if="productdetails.color==val.color_name" class="selectcolor bold" v-on:click="changecolor(val.color_name)"  alt="" />
+              <img :src="val.image_url" class="selectcolor" v-else v-on:click="changecolor(val.color_name)"  alt="" />
+              <img src="../assets/Selected.svg" v-if="productdetails.color==val.color_name" class="selectedicon" alt="">
+              <img src="../assets/Selected.svg" v-else class="hideicon" alt="">
             </div>
           </div>
           <div class="size">
@@ -162,7 +166,7 @@
         </div>
         <div class="seventh">
           <div class="imput">
-            <i class="fa-solid fa-location-dot"></i>
+            <img src="../assets/location.svg" class="locationicon" alt="">
             <input placeholder="Enter delivery pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" inputmode="numeric"  id="check" type="text" maxlength="6" autocomplete="off" class="location" value="">
 
             <button class="button"><strong>check pincode</strong></button>
@@ -330,7 +334,7 @@
       </div>
     </div>
 
-    <Footer />
+    <Footer space="true" />
   </div>
 </template>
 
@@ -435,17 +439,15 @@ export default {
     },
     hide(id){
       if(id){
-        document.getElementById("hide").style.display="flex"
+        document.getElementById("hide").style.display="block"
         document.getElementById("show").style.display="none"
-        document.getElementById("hidetext2").style.display="block"
-        document.getElementById("hidetext1").style.display="none"
+
         
 
       }else{
-        document.getElementById("show").style.display="flex"
+        document.getElementById("show").style.display="block"
         document.getElementById("hide").style.display="none"
-        document.getElementById("hidetext2").style.display="none"
-        document.getElementById("hidetext1").style.display="block"
+
       }
       
     }
@@ -457,12 +459,32 @@ export default {
 </script>
 
 <style scoped>
+.locationicon{
+  width: 13px;
+}
+.variationImg{
+  position: relative;
+}
+
+.bold{
+ 
+  border: 2px solid black;
+}
 .smooth{
   color: white;
   background-color: #000000;
 }
-.seventh{
-  padding: 20px !important;
+.selectedicon{
+  width: 13px !important;
+  height: 13px;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 11;
+}
+.hideicon{
+  display: none;
+
 }
 
 #hide {
@@ -490,9 +512,7 @@ p {
 
   /* padding: 0px 0px 20px 40px; */
 }
-#hidetext2{
-  display: none;
-}
+
 .location{
   border: none;
   outline: none;
@@ -519,7 +539,7 @@ p {
   margin: 8px 0px;
 }
 .imput{
-  padding: 10px 0px;
+  padding: 17px 0px;
   border-radius: 10px;
   align-items: center;
   /* margin: 0px 10px; */
@@ -623,12 +643,12 @@ p {
 .third,
 .forth,
 .seventh {
-  border-bottom: 1px #bebebe solid;
+  border-bottom: 1px #DFDFDF solid;
   padding: 20px 0px;
 }
 .fifth,
 .sixth{
-    border-bottom: 1px #bebebe solid;
+    border-bottom: 1px #DFDFDF solid;
   
 }
 .paddings{
@@ -674,6 +694,7 @@ padding: 20px 0px;
   font-size: 13px;
 }
 .variationImg img {
+  
   width: 60px;
   margin: 10px;
   margin-left: 0px;
@@ -764,6 +785,9 @@ padding: 20px 0px;
   }
 }
 @media screen and (max-width: 768px) {
+  .crosal {
+  width: 85%;
+}
   .list2 {
   grid-template-columns: repeat(1, 1fr);
 }
