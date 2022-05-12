@@ -255,7 +255,7 @@
         </VueSlickCarousel>
       </div>
     </div>
-    <div v-if="productdetails.similar_products!==''" class="similarproduct">
+    <div v-if="productdetails.similar_products!==undefined" class="similarproduct">
        <h3 class="similar">Similar Products</h3>
       <div class="slider_similar_web">
         <VueSlickCarousel
@@ -512,6 +512,7 @@ p {
 
   /* padding: 0px 0px 20px 40px; */
 }
+
 
 .location{
   border: none;
@@ -785,6 +786,7 @@ padding: 20px 0px;
   }
 }
 @media screen and (max-width: 768px) {
+
   .crosal {
   width: 85%;
 }
@@ -827,7 +829,9 @@ padding: 20px 0px;
     right: 0px;
     width: 100%;
     background-color: #F8F8F8;
-    z-index: 10;
+    z-index: 20;
+    border-top: 1px solid #DFDFDF;
+  padding: 10px;
   }
 }
 </style>

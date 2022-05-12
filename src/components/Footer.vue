@@ -263,7 +263,7 @@ export default {
 }
 @media screen and (max-width: 780px) {
   .spacez{
-    height: 60px;
+    height: 80px;
   }
   .footer-widget-mobile {
     display: grid;

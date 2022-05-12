@@ -534,7 +534,6 @@ p {
   color: transparent;
   width: 1.15em;
   height: 1.15em;
-  border: 0.15em solid currentColor;
   border-radius: 50%;
 }
 .mobilesort {
@@ -805,6 +804,8 @@ p {
   .category {
     position: fixed;
     display: none;
+    animation: fadeIn 2s;
+    animation-direction: alternate;
     z-index: 3;
     top: 0;
     left: 0;
@@ -813,6 +814,15 @@ p {
     overflow-y: scroll;
     width: 70%;
   }
+  @keyframes fadeIn {
+  0% {left:-200px;}
+  100% {left:0px;}
+}
+@keyframes fadeOut {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
   .mobilesort {
     display: none;
     background-color: #f8f8f8;
