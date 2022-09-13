@@ -1,4 +1,4 @@
-# new-ui
+Hosted URL : https://ecommerceui-97b32.web.app/
 
 ## Project setup
 ```
