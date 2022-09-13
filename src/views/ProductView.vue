@@ -341,7 +341,7 @@
 <script>
 import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
-// optional style for arrows & dots
+// optional style for arrows & dots    display: flex;
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
